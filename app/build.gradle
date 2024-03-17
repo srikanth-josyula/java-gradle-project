@@ -12,7 +12,9 @@ plugins {
 
 repositories {
     // Use Maven Central for resolving dependencies.
-    mavenCentral()
+     maven {
+        url 'https://repo.maven.apache.org/maven2'
+    }
 }
 
 dependencies {
@@ -28,7 +30,7 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(7)
+        languageVersion = JavaLanguageVersion.of(11)  
     }
 }
 
