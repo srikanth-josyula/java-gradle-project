@@ -43,3 +43,13 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+// Define a custom task for printing "Hello World"
+task helloWorld {
+    doLast {
+        println 'Hello World , version = '+version
+    }
+}
+
+// Make the "helloWorld" task execute before the "test" task
+test.dependsOn helloWorld
