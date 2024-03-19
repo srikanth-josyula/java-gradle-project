@@ -39,17 +39,59 @@ application {
     mainClass = 'org.example.App'
 }
 
+
+//Other way of naming tasks
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
 
+
+
+/**
+* Different types of tasks
+**/
+
 // Define a custom task for printing "Hello World"
-task helloWorld {
+task getVersion {
     doLast {
-        println 'Hello World , version = '+version
+    	println "============================ TASKS ============================"
+        println "Hello,\n Project Version = "+version+"\n Java version: "+ System.getProperty('java.version')+"\n Groovy version: " + GroovySystem.version
     }
 }
 
-// Make the "helloWorld" task execute before the "test" task
-test.dependsOn helloWorld
+// Define the task to compile Java source code and create a JAR
+// Define the task to compile Java source code and create a JAR
+task buildJar(type: Jar) {
+    dependsOn 'getVersion' // Dependency on getVersion
+    from sourceSets.main.output
+    archiveFileName = 'my-app.jar'
+    destinationDir = file('build/libs')
+    
+    // Specify the main class in the JAR's manifest
+    manifest {
+        attributes 'Main-Class': 'org.example.App'
+    }
+}
+
+// Define the task to copy resource files to build directory
+task copyResources {
+    dependsOn buildJar // Dependency on building JAR
+    doLast {
+        copy {
+            from 'src/main/resources'
+            into 'build/resources/main'
+        }
+    }
+}
+
+// By default we have customazise the builds 
+// Define the task to clean build folder
+task cleanBuild(type: Delete) {
+    doLast {
+        delete 'build'
+    }
+}
+
+// Make the "getVersion" task execute before the "test" task
+test.dependsOn getVersion
